@@ -27,11 +27,11 @@ simulate() {
 
  #Make filename strings
  base=`echo $1 |awk -F/ '{print $2}'`
- end=`echo $base |awk -F. '{print $2}'`
- filename=`echo $base |awk -F_ '{print $1}'`
+ end=`echo $base |awk -F. '{print $(NF-1)}'`
+ filename=`echo $base | rev | cut -d _ -f2- | rev`
  filename_1=$filename"_1."$end
  filename_2=$filename"_2."$end
- raw_data_dir=${2%/}
+ raw_data_dir=${2%/ls | wc -l}
 
  #Find number of reads in input files
  echo $raw_data_dir/$base
