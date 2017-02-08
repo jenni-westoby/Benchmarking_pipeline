@@ -31,7 +31,7 @@ simulate() {
  filename=`echo $base | rev | cut -d _ -f2- | rev`
  filename_1=$filename"_1."$end
  filename_2=$filename"_2."$end
- raw_data_dir=${2%/ls | wc -l}
+ raw_data_dir=${2%/}
 
  #Find number of reads in input files
  echo $raw_data_dir/$base
