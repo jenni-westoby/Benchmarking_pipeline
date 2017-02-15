@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Function which produces quality control statistics based on read and alignment
 #quality. Takes 2 or 3 args. The first arg is the path to the reference gtf file,
 #the second is the path to the reference fasta, the third is the path to the raw
@@ -23,8 +25,8 @@ QC() {
     for i in $(find . -name '*_1.fastq*' -o -name '*_1.fq*');
     do
       base=`echo $i |awk -F/ '{print $2}'`
-      filename=`echo $base |awk -F_ '{print $1}'`
-      end=`echo $base |awk -F_ '{print $2}'`
+      filename=`echo $base | rev | cut -d _ -f2- | rev`
+      end=`echo $base |awk -F. '{print $(NF-2)"."$(NF-1)"."$(NF)}' | awk -F_ '{print $NF}'`
       cd $memory
       bsub -n8 -R"span[hosts=1]" -c 99999 -G team_hemberg -q normal -o $TEAM/temp.logs/output.$filename"qcsim" -e $TEAM/temp.logs/error.$filename"qcsim" -R"select[mem>100000] rusage[mem=100000]" -M 100000 qualitycontrol $filename Simulation/data/simulated ${end%/} "simulated"
     done
@@ -46,8 +48,8 @@ QC() {
     for i in $(find . -name '*_1.fastq*' -o -name '*_1.fq*');
     do
       base=`echo $i |awk -F/ '{print $2}'`
-      filename=`echo $base |awk -F_ '{print $1}'`
-      end=`echo $base |awk -F_ '{print $2}'`
+      filename=`echo $base | rev | cut -d _ -f2- | rev`
+      end=`echo $base |awk -F. '{print $(NF-2)"."$(NF-1)"."$(NF)}' | awk -F_ '{print $NF}'`
       data_dir=${3%/}
       cd $memory
       bsub -n8 -R"span[hosts=1]" -c 99999 -G team_hemberg -q normal -o $TEAM/temp.logs/output.$filename"qcraw" -e $TEAM/temp.logs/error.$filename"qcraw" -R"select[mem>100000] rusage[mem=100000]" -M 100000 qualitycontrol $filename $data_dir ${end%/} "raw"
