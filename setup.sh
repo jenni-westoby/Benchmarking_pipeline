@@ -120,6 +120,17 @@ fi
   else
     echo "Successfully installed RSeQC"
   fi
+  
+  #Install BRIE
+  easy_install -U distribute matplotlib
+  pip install numpy scipy pysam h5py
+  pip install brie
+  if ! command -v brie  >/dev/null 2>&1; then
+    echo "Failed to install BRIE"
+  exit 1
+  else
+    echo "Successfully installed BRIE"
+  fi
   deactivate
 
   #Make a directory for RNA-seq data including raw and simulated data
