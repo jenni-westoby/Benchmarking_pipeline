@@ -163,6 +163,9 @@ fi
 
   mkdir ref
   mkdir results_matrices
+  
+  #Make BRIE files
+  mkdir BRIE_splicing_events
 
 }
 
