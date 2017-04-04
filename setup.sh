@@ -43,7 +43,7 @@ setup(){
   rm Sailfish-0.6.3-Linux_x86-64.tar.gz
   export LD_LIBRARY_PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
   export PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
-  if ! command -v ./Sailfish-0.6.3-Linux_x86-64/bin/sailfish -h
+  if ! command -v ./Sailfish-0.6.3-Linux_x86-64/bin/sailfish -h; then
     echo "Failed to install Sailfish"
     exit 1
   else
