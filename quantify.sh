@@ -34,35 +34,17 @@ RSEM(){
   mv Simulation/RSEM_results/'trimmed'$filename'.isoforms.results' Simulation/RSEM_results/$filename'.isoforms.results'
 
   #Sort the results file
-  sort -n -k1.8 Simulation/RSEM_results/$filename'.isoforms.results' > Simulation/RSEM_results/$filename'.sortedisoforms.results'
+  echo "transcript      gene_id length  effective_length        expected_count  TPM     FPKM    IsoPct  posterior_mean_count    posterior_standard_deviation_of_count   pme_TPM pme_FPKM        IsoPct_from_pme_TPM" > Simulation/RSEM_results/$filename'.sortedisoforms.results'
+  tail -n +2  Simulation/RSEM_results/$filename'.isoforms.results' | sort -n -k1.8 >> Simulation/RSEM_results/$filename'.sortedisoforms.results'
   mv Simulation/RSEM_results/$filename'.sortedisoforms.results' Simulation/RSEM_results/$filename'.isoforms.results'
 
-	printf $filename","$((stop_RSEM-start_RSEM))"\n">> Simulation/time_stats/time_RSEM.csv
+  time_align=`grep "Aligning reads:" Simulation/RSEM_results/$filename".time" | awk '{print $3}'`
+  time_expr=`grep "Estimating expression levels:" Simulation/RSEM_results/$filename".time" | awk '{print $4}'`
+  time_cred=`grep "Calculating credibility intervals:" Simulation/RSEM_results/$filename".time" | awk '{print $4}'`
+
+	printf $filename","$((stop_RSEM-start_RSEM))","$time_align","$time_expr","$time_cred"\n" >> Simulation/time_stats/time_RSEM.csv
 }
 
-Cufflinks(){
-
-  #Rename/reformat input arguments
-  filename=$1
-  gtf=$2
-  library=$3
-
-  mkdir Simulation/Cufflinks_results/$filename
-
-  if [ ! -f Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' ]; then
-    STAR $filename
-  fi
-
-  #Start the clock for cufflinks
-  start_Cufflinks=`date +%s`
-
-  ./Simulation/cufflinks-2.2.1.Linux_x86_64/cufflinks -p 8 -F 0 --library-type $library -G $gtf -o Simulation/Cufflinks_results/$filename Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam'
-
-  stop_cufflinks=`date +%s`
-
-  printf $filename","$((stop_cufflinks-start_cufflinks))"\n">> Simulation/time_stats/time_cufflinks.csv
-
-}
 
 
 
@@ -75,7 +57,7 @@ Salmon(){
 	mkdir Simulation/Salmon_results/Salmon_SMEM_results/$filename
 	mkdir Simulation/Salmon_results/Salmon_quasi_results/$filename
 
-  if [ ! -f Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' ]; then
+  if [ ! -f Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' ]; then
     STAR $filename
   fi
 
@@ -83,7 +65,7 @@ Salmon(){
 	start_Salmon_align=`date +%s`
 
 	#Salmon alignment mode
-	Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon --no-version-check quant -a Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' -t Simulation/ref/reference.transcripts.fa -l A -o Simulation/Salmon_results/Salmon_Alignment_Results/$filename -p 8
+	Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon --no-version-check quant -a Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -t Simulation/ref/reference.transcripts.fa -l A -o Simulation/Salmon_results/Salmon_Alignment_Results/$filename -p 8
 
 	#Stop the clock for Salmon alignment mode
 
@@ -96,16 +78,9 @@ Salmon(){
 	rm -r Simulation/Salmon_results/Salmon_Alignment_Results/$filename/logs
 
   #Sort the results file
-  sort -n -k1.8 Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quant.sf > Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quantsorted.sf
+  echo "Name    Length  EffectiveLength TPM     NumReads" > Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quantsorted.sf
+  tail -n +2 Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quant.sf | sort -n -k1.8 >> Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quantsorted.sf
   mv Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quantsorted.sf Simulation/Salmon_results/Salmon_Alignment_Results/$filename/quant.sf
-
-  #If the SMEM index doesn't exist, make it
-  if [ ! "$(ls -A Simulation/indices/Salmon_SMEM)" ]; then
-    start_Salmon_SMEM_index=`date +%s`
-    Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM --type fmd -p 8
-    stop_Salmon_SMEM_index=`date +%s`
-    printf $filename","$((stop_Salmon_SMEM_index-start_Salmon_SMEM_index)) >> Simulation/time_stats/time_Salmon_SMEM_index.csv
-  fi
 
 	#Start the clock for Salmon alignment free SMEM
 	start_Salmon_SMEM=`date +%s`
@@ -123,16 +98,9 @@ Salmon(){
 	rm -r Simulation/Salmon_results/Salmon_SMEM_results/$filename/logs
 
   #Sort the results file
-  sort -n -k1.8 Simulation/Salmon_results/Salmon_SMEM_results/$filename/quant.sf > Simulation/Salmon_results/Salmon_SMEM_results/$filename/quantsorted.sf
+  echo "Name    Length  EffectiveLength TPM     NumReads" > Simulation/Salmon_results/Salmon_SMEM_results/$filename/quantsorted.sf
+  tail -n +2 Simulation/Salmon_results/Salmon_SMEM_results/$filename/quant.sf | sort -n -k1.8 >> Simulation/Salmon_results/Salmon_SMEM_results/$filename/quantsorted.sf
   mv Simulation/Salmon_results/Salmon_SMEM_results/$filename/quantsorted.sf Simulation/Salmon_results/Salmon_SMEM_results/$filename/quant.sf
-
-  #If the quasi index doesn't exist, make it
-  if [ ! "$(ls -A Simulation/indices/Salmon_quasi)" ]; then
-    start_Salmon_quasi_index=`date +%s`
-    Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_quasi/transcripts_index_quasi --type quasi -k 31 -p 8
-    stop_Salmon_quasi_index=`date +%s`
-    printf $filename","$((stop_Salmon_quasi_index-start_Salmon_quasi_index)) >> Simulation/time_stats/time_Salmon_quasi_index.csv
-  fi
 
 	#Start the clock for alignment free quasi
 	start_Salmon_quasi=`date +%s`
@@ -150,7 +118,8 @@ Salmon(){
 	rm -r Simulation/Salmon_results/Salmon_quasi_results/$filename/logs
 
   #Sort the results file
-  sort -n -k1.8 Simulation/Salmon_results/Salmon_quasi_results/$filename/quant.sf > Simulation/Salmon_results/Salmon_quasi_results/$filename/quantsorted.sf
+  echo "Name    Length  EffectiveLength TPM     NumReads" > Simulation/Salmon_results/Salmon_quasi_results/$filename/quantsorted.sf
+  tail -n +2 Simulation/Salmon_results/Salmon_quasi_results/$filename/quant.sf | sort -n -k1.8 >> Simulation/Salmon_results/Salmon_quasi_results/$filename/quantsorted.sf
   mv Simulation/Salmon_results/Salmon_quasi_results/$filename/quantsorted.sf Simulation/Salmon_results/Salmon_quasi_results/$filename/quant.sf
 
 	#Output all times into Time.csv
@@ -165,7 +134,7 @@ eXpress () {
 	#make a directory for the results of eXpress for each cell
 	mkdir Simulation/eXpress_results/$filename
 
-  if [ ! -f Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' ]; then
+  if [ ! -f Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' ]; then
     STAR $filename
   fi
 
@@ -173,32 +142,25 @@ eXpress () {
 	start_eXpress=`date +%s`
 
 	#Run eXpress
-	./Simulation/express-1.5.1-linux_x86_64/express Simulation/ref/reference.transcripts.fa Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' -o Simulation/eXpress_results/$filename
+	./Simulation/express-1.5.1-linux_x86_64/express Simulation/ref/reference.transcripts.fa Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -o Simulation/eXpress_results/$filename
 
 	#Stop the clock for eXpress
 	stop_eXpress=`date +%s`
 
   #Remove first column of results file then sort the file
   cut -d$'\t' -f 2- Simulation/eXpress_results/$filename/results.xprs > Simulation/eXpress_results/$filename/resultscut.xprs
-  sort -n -k1.8 Simulation/eXpress_results/$filename/resultscut.xprs > Simulation/eXpress_results/$filename/results.xprs
+  echo "target_id       length  eff_length      tot_counts      uniq_counts     est_counts      eff_counts      ambig_distr_alpha       ambig_distr_beta        fpkm    fpkm_conf_low   fpkm_conf_high  solvable        tpm" > Simulation/eXpress_results/$filename/results.xprs
+  tail -n +2 Simulation/eXpress_results/$filename/resultscut.xprs | sort -n -k1.8  >> Simulation/eXpress_results/$filename/results.xprs
 
-	printf $filename","$((stop_eXpress-start_eXpress))"\n" >> $TEAM/time_eXpress.csv
+	printf $filename","$((stop_eXpress-start_eXpress))"\n" >> Simulation/time_stats/time_eXpress.csv
 
 }
 
 Kallisto () {
 
-	#make a directory for the results of eXpress for each cell
+	#make a directory for the results of Kallisto for each cell
 	filename=$1
 	mkdir Simulation/Kallisto_results/$filename
-
-  #If there is no index for kallisto, make it
-  if [ ! "$(ls -A Simulation/indices/Kallisto)" ]; then
-    start_kallisto_index=`date +%s`
-    ./Simulation/kallisto_linux-v0.43.0/kallisto index -i Simulation/indices/Kallisto/transcripts.idx Simulation/ref/reference.transcripts.fa
-    stop_kallisto_index=`date +%s`
-    printf $filename","$((stop_kallisto_index-start_kallisto_index)) >> Simulation/time_stats/time_kallisto_index.csv
-  fi
 
 	#Start the clock for kallisto
 	start_kallisto=`date +%s`
@@ -208,10 +170,10 @@ Kallisto () {
 	#Stop the clock for kallisto
 	stop_kallisto=`date +%s`
 
-	printf $filename","$((stop_kallisto-start_kallisto))"\n" >> $TEAM/time_kallisto.csv
+	printf $filename","$((stop_kallisto-start_kallisto))"\n" >> Simulation/time_stats/time_kallisto.csv
 
-  #Sort the results file
-  sort -n -k1.8 Simulation/Kallisto_results/$filename/abundance.tsv > Simulation/Kallisto_results/$filename/abundancesorted.tsv
+  echo "target_id       length  eff_length      est_counts      tpm" >> Simulation/Kallisto_results/$filename/abundancesorted.tsv
+  tail -n +2 Simulation/Kallisto_results/$filename/abundance.tsv | sort -n -k1.8 >> Simulation/Kallisto_results/$filename/abundancesorted.tsv
   mv Simulation/Kallisto_results/$filename/abundancesorted.tsv Simulation/Kallisto_results/$filename/abundance.tsv
 
 }
@@ -225,14 +187,6 @@ Sailfish(){
   export LD_LIBRARY_PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
   export PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
 
-  #If there is no index for sailfisg, make it
-  if [ ! "$(ls -A Simulation/indices/Kallisto)" ]; then
-    start_sailfish_index=`date +%s`
-    ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish index -p 8 -t Simulation/ref/reference.transcripts.fa -o Simulation/indices/Sailfish/ -k 31
-    stop_sailfish_index=`date +%s`
-    printf $filename","$((stop_sailfish_index-start_sailfish_index)) >> Simulation/time_stats/time_sailfish_index.csv
-  fi
-
   #Start the clock for sailfish
   start_sailfish=`date +%s`
 
@@ -242,7 +196,7 @@ Sailfish(){
 
   stop_sailfish=`date +%s`
 
-  printf $filename","$((stop_sailfish-start_sailfish))"\n" >> $TEAM/time_sailfish.csv
+  printf $filename","$((stop_sailfish-start_sailfish))"\n" >> Simulation/time_stats/time_sailfish.csv
 
   rm Simulation/Sailfish_results/$filename/logs
   rm Simulation/Sailfish_results/$filename/quant_bias_corrected.sf
@@ -264,7 +218,7 @@ STAR(){
 	start_STAR=`date +%s`
 
 	#Make STAR reference
-	./Simulation/STAR/bin/Linux_x86_64/STAR --runThreadN 8 --genomeDir Simulation/ref --readFilesIn Simulation/data/simulated/$filename'_1.fq' Simulation/data/simulated/$filename'_2.fq' --outFileNamePrefix Simulation/bamfiles/simulated/$filename'XS' --outSAMstrandField intronMotif --outSAMtype BAM Unsorted --quantMode TranscriptomeSAM
+	./Simulation/STAR/bin/Linux_x86_64/STAR --runThreadN 8 --genomeDir Simulation/ref --readFilesIn Simulation/data/simulated/$filename'_1.fq' Simulation/data/simulated/$filename'_2.fq' --outFileNamePrefix Simulation/bamfiles/simulated/$filename --outSAMtype BAM Unsorted --quantMode TranscriptomeSAM
 
 	#Stop the clock for STAR
 	stop_STAR=`date +%s`
@@ -273,7 +227,7 @@ STAR(){
 	start_samtools_sort=`date +%s`
 
 	#Sort STAR bamfiles
-	./Simulation/samtools-1.3.1/samtools sort Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.out.bam' -T Simulation/bamfiles/simulated/$filename'temp' -o Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.sortedByCoord.out.bam'
+	./Simulation/samtools-1.3.1/samtools sort Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -T Simulation/bamfiles/simulated/$filename'temp' -o Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
 
 
 	#Stop the clock for Samtools sort
@@ -283,12 +237,12 @@ STAR(){
 	start_samtools_index=`date +%s`
 
 	#Index STAR bamfiles
-	./Simulation/samtools-1.3.1/samtools index Simulation/bamfiles/simulated/$filename'XSAligned.toTranscriptome.sortedByCoord.out.bam'
+	./Simulation/samtools-1.3.1/samtools index Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
 
 	#Stop the clock for Samtools
 	stop_samtools_index=`date +%s`
 
-	printf $filename","$((stop_STAR-start_STAR))","$((stop_samtools_sort-start_samtools_sort))","$((stop_samtools_index-start_samtools_index))"\n" >> Simulation/time_stats/time_STARXS_samtools.csv
+	printf $filename","$((stop_STAR-start_STAR))","$((stop_samtools_sort-start_samtools_sort))","$((stop_samtools_index-start_samtools_index))"\n" >> Simulation/time_stats/time_STAR_samtools.csv
 
 }
 
@@ -299,7 +253,6 @@ export -f Salmon
 export -f eXpress
 export -f Kallisto
 export -f STAR
-export -f Cufflinks
 export -f Sailfish
 
 "$@"
