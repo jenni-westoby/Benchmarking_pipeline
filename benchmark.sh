@@ -8,7 +8,7 @@ benchmark(){
   if [ $# -eq 1 ]
     then
       #If an appropriate argument was passed
-      if [ "$1" == "Kallisto" ] || [ "$1" == "Salmon" ] || [ "$1" == "eXpress" ] || [ "$1" == "RSEM" ] || [ "$1" == "Sailfish" ]; then
+      if [ "$1" == "Kallisto" ] || [ "$1" == "Salmon" ] || [ "$1" == "eXpress" ] || [ "$1" == "RSEM" ] || [ "$1" == "Sailfish" ] || [ "$1" == "BRIE" ]; then
 
         #Make results directory
         mkdir Simulation/$1"_results"
@@ -20,6 +20,62 @@ benchmark(){
           mkdir Salmon_SMEM_results
           mkdir Salmon_quasi_results
           cd ../..
+
+          #If the SMEM index doesn't exist, make it
+          if [ ! "$(ls -A Simulation/indices/Salmon_SMEM)" ]; then
+            start_Salmon_SMEM_index=`date +%s`
+            ./Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM --type fmd -p 8
+            stop_Salmon_SMEM_index=`date +%s`
+            printf $filename","$((stop_Salmon_SMEM_index-start_Salmon_SMEM_index)) >> Simulation/time_stats/time_Salmon_SMEM_index.csv
+          fi
+
+          #If the quasi index doesn't exist, make it
+          if [ ! "$(ls -A Simulation/indices/Salmon_quasi)" ]; then
+            start_Salmon_quasi_index=`date +%s`
+            ./Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_quasi/transcripts_index_quasi --type quasi -k 31 -p 8
+            stop_Salmon_quasi_index=`date +%s`
+            printf $filename","$((stop_Salmon_quasi_index-start_Salmon_quasi_index)) >> Simulation/time_stats/time_Salmon_quasi_index.csv
+          fi
+        fi
+
+        if [ "$1" == "Kallisto" ]; then
+            #If there is no Kallisto index, make it
+            if [ ! "$(ls -A Simulation/indices/Kallisto)" ]; then
+                start_kallisto_index=`date +%s`
+                ./Simulation/kallisto_linux-v0.43.0/kallisto index -i Simulation/indices/Kallisto/transcripts.idx Simulation/ref/reference.transcripts.fa
+                stop_kallisto_index=`date +%s`
+                printf $((stop_kallisto_index-start_kallisto_index)) >> Simulation/time_stats/time_kallisto_index.csv
+            fi
+        fi
+
+        if [ "$1" == "Sailfish" ]; then
+              #If there is no index for sailfish, make it
+              if [ ! "$(ls -A Simulation/indices/Sailfish)" ]; then
+                export LD_LIBRARY_PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
+                export PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
+                start_sailfish_index=`date +%s`
+                LC_ALL=C ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish index -p 8 -t Simulation/ref/reference.transcripts.fa -o Simulation/indices/Sailfish/ -k 31
+                stop_sailfish_index=`date +%s`
+                printf $filename","$((stop_sailfish_index-start_sailfish_index)) >> Simulation/time_stats/time_sailfish_index.csv
+              fi
+        fi
+
+        if [ "$1" == "BRIE" ]; then
+              #If there mouse_features.csv doesn't exist, make it
+              if [ ! "$(ls -A BRIE_splicing_events/mouse_features.csv)" ]; then
+                #activate venv
+                source Simulation/venv/bin/activate
+
+                brie-event -a $TEAM/genomes/Mus_musculus.GRCm38.82.chr.gtf -o Simulation/BRIE_splicing_events
+
+                brie-event-filter -a Simulation/BRIE_splicing_events/SE.gff3 --anno_ref=$TEAM/genomes/Mus_musculus.GRCm38.82.chr.gtf --reference=$TEAM/genomes/Mus_musculus.GRCm38.dna.toplevel.fa
+
+                chmod +x ./bigWigSummary
+                memory=`pwd`
+                export PATH="$memory:$PATH"
+
+                brie-factor -a Simulation/BRIE_splicing_events/SE.gold.gtf -r $TEAM/genomes/Mus_musculus.GRCm38.dna.toplevel.fa -c mm10.60way.phastCons.bw -o Simulation/BRIE_splicing_events/mouse_features.csv -p 10
+              fi
         fi
 
         #Run tool on simulated cells. Each cell is submitted as a seperate job.
@@ -51,45 +107,8 @@ benchmark(){
         echo "Inappropriate argument passed. If one argument is passed, the following arguments are accepted: Kallisto, Salmon, eXpress and RSEM."
       fi
 
-  # elif [ $# -eq 2 ]; then
-  #   if [ "$1" == "Sailfish" ]; then
-  #
-  #     mkdir Simulation/$1"_results"
-  #
-  #     cd Simulation/data/simulated
-  #     for i in $(find . -name '*_1.fastq*' -o -name '*_1.fq*');
-  #     do
-  #       base=`echo $i |awk -F/ '{print $2}'`
-  #       filename=`echo $base |awk -F_ '{print $1}'`
-  #       cd $memory
-  #       #The line below will need to be edited for your LSF job system.
-  #       bsub -n8 -R"span[hosts=1]" -c 99999 -G team_hemberg -q normal -o $TEAM/temp.logs/"output."$filename$1 -e $TEAM/temp.logs/"error."$filename$1 -R"select[mem>20000] rusage[mem=20000]" -M 20000 ./quantify.sh $1 $filename $2
-  #     done
-  #
-  #   else
-  #     echo "Inappropriate argument passed. If two arguments are passed, the first should be Sailfish and the second should be the library type."
-  #   fi
-
-  elif [ $# -eq 3 ]; then
-    if [ "$1" == "Cufflinks" ]; then
-
-      mkdir Simulation/$1"_results"
-
-      cd Simulation/data/simulated
-      for i in $(find . -name '*_1.fastq*' -o -name '*_1.fq*');
-      do
-        base=`echo $i |awk -F/ '{print $2}'`
-        filename=`echo $base |awk -F_ '{print $1}'`
-        cd $memory
-        #The line below will need to be edited for your LSF job system.
-        bsub -n8 -R"span[hosts=1]" -c 99999 -G team_hemberg -q normal -o $TEAM/temp.logs/"output."$filename$1 -e $TEAM/temp.logs/"error."$filename$1 -R"select[mem>20000] rusage[mem=20000]" -M 20000 ./quantify.sh $1 $filename $2 $3
-      done
-    else
-      echo "Inappropriate argument passed. If three arguments are provided, the first should be Cufflinks, the second should be the path to the reference gtf file and the third should be the library type."
-    fi
-
   else
-    echo "Wrong number of arguments passed. One or three arguments are accepted."
+    echo "Wrong number of arguments passed. One argument is accepted."
   fi
 
 
