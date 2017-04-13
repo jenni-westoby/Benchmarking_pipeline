@@ -137,6 +137,7 @@ fi
   mkdir data
   cd data
   mkdir simulated
+  mkdir temp
   cd ..
 
   #Make a directory for quality control statistics for raw and simulated data
