@@ -65,7 +65,7 @@ Salmon(){
 	start_Salmon_align=`date +%s`
 
 	#Salmon alignment mode
-	Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon --no-version-check quant -a Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -t Simulation/ref/reference.transcripts.fa -l A -o Simulation/Salmon_results/Salmon_Alignment_Results/$filename -p 8
+	Simulation/Salmon-0.8.2_linux_x86_64/bin/salmon --no-version-check quant -a Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -t Simulation/ref/reference.transcripts.fa -l A -o Simulation/Salmon_results/Salmon_Alignment_Results/$filename -p 8
 
 	#Stop the clock for Salmon alignment mode
 
@@ -86,7 +86,7 @@ Salmon(){
 	start_Salmon_SMEM=`date +%s`
 
 	#Salmon alignment free SMEM
-	Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon --no-version-check quant -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM -l A -1 Simulation/data/simulated/$filename'_1.fq' -2 Simulation/data/simulated/$filename'_2.fq' -o Simulation/Salmon_results/Salmon_SMEM_results/$filename -p 8
+	Simulation/Salmon-0.8.2_linux_x86_64/bin/salmon --no-version-check quant -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM -l A -1 Simulation/data/simulated/$filename'_1.fq' -2 Simulation/data/simulated/$filename'_2.fq' -o Simulation/Salmon_results/Salmon_SMEM_results/$filename -p 8
 
 	#Stop the clock for Salmon SMEM
 	stop_Salmon_SMEM=`date +%s`
@@ -106,7 +106,7 @@ Salmon(){
 	start_Salmon_quasi=`date +%s`
 
 	#Salmon alignment free quasi
-	Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon --no-version-check quant -i Simulation/indices/Salmon_quasi/transcripts_index_quasi -l A -1 Simulation/data/simulated/$filename'_1.fq' -2 Simulation/data/simulated/$filename'_2.fq' -o Simulation/Salmon_results/Salmon_quasi_results/$filename -p 8
+	Simulation/Salmon-0.8.2_linux_x86_64/bin/salmon --no-version-check quant -i Simulation/indices/Salmon_quasi/transcripts_index_quasi -l A -1 Simulation/data/simulated/$filename'_1.fq' -2 Simulation/data/simulated/$filename'_2.fq' -o Simulation/Salmon_results/Salmon_quasi_results/$filename -p 8
 
 	#Stop the clock for other alignment quasi
 	stop_Salmon_quasi=`date +%s`
