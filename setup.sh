@@ -63,10 +63,10 @@ setup(){
   fi
 
   #Install Salmon
-  wget https://github.com/COMBINE-lab/salmon/releases/download/v0.7.2/Salmon-0.7.2_linux_x86_64.tar.gz
-  tar -xvzf Salmon-0.7.2_linux_x86_64.tar.gz
-  rm Salmon-0.7.2_linux_x86_64.tar.gz
-  if ! command -v ./Salmon-0.7.2_linux_x86_64/bin/salmon >/dev/null 2>&1; then
+  wget https://github.com/COMBINE-lab/salmon/releases/download/v0.8.2/Salmon-0.8.2_linux_x86_64.tar.gz
+  tar -xvzf Salmon-0.8.2_linux_x86_64.tar.gz
+  rm Salmon-0.8.2_linux_x86_64.tar.gz
+  if ! command -v ./Salmon-0.8.2_linux_x86_64/bin/salmon >/dev/null 2>&1; then
     echo "Failed to install Salmon"
     exit 1
   else
