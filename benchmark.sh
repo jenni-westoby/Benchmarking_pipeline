@@ -24,7 +24,7 @@ benchmark(){
           #If the SMEM index doesn't exist, make it
           if [ ! "$(ls -A Simulation/indices/Salmon_SMEM)" ]; then
             start_Salmon_SMEM_index=`date +%s`
-            ./Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM --type fmd -p 8
+            ./Simulation/Salmon-0.8.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_SMEM/transcripts_index_SMEM --type fmd -p 8
             stop_Salmon_SMEM_index=`date +%s`
             printf $filename","$((stop_Salmon_SMEM_index-start_Salmon_SMEM_index)) >> Simulation/time_stats/time_Salmon_SMEM_index.csv
           fi
@@ -32,7 +32,7 @@ benchmark(){
           #If the quasi index doesn't exist, make it
           if [ ! "$(ls -A Simulation/indices/Salmon_quasi)" ]; then
             start_Salmon_quasi_index=`date +%s`
-            ./Simulation/Salmon-0.7.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_quasi/transcripts_index_quasi --type quasi -k 31 -p 8
+            ./Simulation/Salmon-0.8.2_linux_x86_64/bin/salmon index -t Simulation/ref/reference.transcripts.fa -i Simulation/indices/Salmon_quasi/transcripts_index_quasi --type quasi -k 31 -p 8
             stop_Salmon_quasi_index=`date +%s`
             printf $filename","$((stop_Salmon_quasi_index-start_Salmon_quasi_index)) >> Simulation/time_stats/time_Salmon_quasi_index.csv
           fi
