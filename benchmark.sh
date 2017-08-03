@@ -42,7 +42,7 @@ benchmark(){
             #If there is no Kallisto index, make it
             if [ ! "$(ls -A Simulation/indices/Kallisto)" ]; then
                 start_kallisto_index=`date +%s`
-                ./Simulation/kallisto_linux-v0.43.0/kallisto index -i Simulation/indices/Kallisto/transcripts.idx Simulation/ref/reference.transcripts.fa
+                ./Simulation/kallisto_linux-v0.43.1/kallisto index -i Simulation/indices/Kallisto/transcripts.idx Simulation/ref/reference.transcripts.fa
                 stop_kallisto_index=`date +%s`
                 printf $((stop_kallisto_index-start_kallisto_index)) >> Simulation/time_stats/time_kallisto_index.csv
             fi
@@ -57,24 +57,6 @@ benchmark(){
                 LC_ALL=C ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish index -p 8 -t Simulation/ref/reference.transcripts.fa -o Simulation/indices/Sailfish/ -k 31
                 stop_sailfish_index=`date +%s`
                 printf $filename","$((stop_sailfish_index-start_sailfish_index)) >> Simulation/time_stats/time_sailfish_index.csv
-              fi
-        fi
-
-        if [ "$1" == "BRIE" ]; then
-              #If there mouse_features.csv doesn't exist, make it
-              if [ ! "$(ls -A BRIE_splicing_events/mouse_features.csv)" ]; then
-                #activate venv
-                source Simulation/venv/bin/activate
-
-                brie-event -a $TEAM/genomes/Mus_musculus.GRCm38.82.chr.gtf -o Simulation/BRIE_splicing_events
-
-                brie-event-filter -a Simulation/BRIE_splicing_events/SE.gff3 --anno_ref=$TEAM/genomes/Mus_musculus.GRCm38.82.chr.gtf --reference=$TEAM/genomes/Mus_musculus.GRCm38.dna.toplevel.fa
-
-                chmod +x ./bigWigSummary
-                memory=`pwd`
-                export PATH="$memory:$PATH"
-
-                brie-factor -a Simulation/BRIE_splicing_events/SE.gold.gtf -r $TEAM/genomes/Mus_musculus.GRCm38.dna.toplevel.fa -c mm10.60way.phastCons.bw -o Simulation/BRIE_splicing_events/mouse_features.csv -p 10
               fi
         fi
 
