@@ -16,7 +16,7 @@ def writefile(program, file_ext, function, unit):
     for file in glob.glob(file_ext):
         string = string + " " + file
 
-    string = "./" + function + " " + string + " > Simulation/Salmon_coverage_matrices/" + program + "_" + unit + ".txt"
+    string = "./" + function + " " + string + " > Simulation/results_matrices/" + program + "_" + unit + ".txt"
     with open(file_path, 'w') as t:
         t.write("#!/bin/bash\n")
         t.write(string)
