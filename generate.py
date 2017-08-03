@@ -16,7 +16,7 @@ def writefile(program, file_ext, function, unit):
     for file in glob.glob(file_ext):
         string = string + " " + file
 
-    string = "./" + function + " " + string + " > Simulation/results_matrices/" + program + "_" + unit + ".txt"
+    string = "./" + function + " " + string + " > Simulation/Salmon_coverage_matrices/" + program + "_" + unit + ".txt"
     with open(file_path, 'w') as t:
         t.write("#!/bin/bash\n")
         t.write(string)
@@ -43,6 +43,9 @@ elif program == "Salmon_quasi":
 
 elif program == "Salmon_SMEM":
     writefile("Salmon_SMEM", "Simulation/Salmon_results/Salmon_SMEM_results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
+
+elif program == "Sailfish":
+    writefile("Sailfish", "Simulation/Sailfish_results/*/quant.sf", "rsem-generate-data-matrix2", "TPM")
 
 elif program == "eXpress":
     writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix6", "Counts")
