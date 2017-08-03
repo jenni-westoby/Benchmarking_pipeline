@@ -26,19 +26,9 @@ setup(){
     echo "Successfully installed RSEM"
   fi
 
-  #Install cufflinks
-  wget http://cole-trapnell-lab.github.io/cufflinks/assets/downloads/cufflinks-2.2.1.Linux_x86_64.tar.gz
-  tar -xvzf cufflinks-2.2.1.Linux_x86_64.tar.gz
-  rm cufflinks-2.2.1.Linux_x86_64.tar.gz
-  if ! command -v ./cufflinks-2.2.1.Linux_x86_64/cufflinks >/dev/null 2>&1; then
-    echo "Failed to install cufflinks"
-    exit 1
-  else
-    echo "Successfully installed cufflinks"
-  fi
-
   #Install Sailfish
-  wget https://github.com/kingsfordgroup/sailfish/releases/download/v0.6.3/Sailfish-0.6.3-Linux_x86-64.tar.gz
+  #Note to self - do a practice install tomorrow and see if it works from source
+  wget https://github.com/kingsfordgroup/sailfish/releases/tag/v0.10.0
   tar -xvzf Sailfish-0.6.3-Linux_x86-64.tar.gz
   rm Sailfish-0.6.3-Linux_x86-64.tar.gz
   export LD_LIBRARY_PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
@@ -52,7 +42,7 @@ setup(){
 
 
   #Install eXpress
-  wget http://bio.math.berkeley.edu/eXpress/downloads/express-1.5.1/express-1.5.1-linux_x86_64.tgz
+  wget https://pachterlab.github.io/eXpress/downloads/express-1.5.1/express-1.5.1-linux_x86_64.tgz
   tar -xvzf express-1.5.1-linux_x86_64.tgz
   rm express-1.5.1-linux_x86_64.tgz
   if ! command -v ./express-1.5.1-linux_x86_64/express >/dev/null 2>&1; then
@@ -74,10 +64,10 @@ setup(){
   fi
 
   #Install Kallisto
-wget https://github.com/pachterlab/kallisto/releases/download/v0.43.0/kallisto_linux-v0.43.0.tar.gz
-tar -xvzf kallisto_linux-v0.43.0.tar.gz
-rm kallisto_linux-v0.43.0.tar.gz
-if ! command -v ./kallisto_linux-v0.43.0/kallisto >/dev/null 2>&1; then
+wget https://github.com/pachterlab/kallisto/releases/download/v0.43.1/kallisto_linux-v0.43.1.tar.gz
+tar -xvzf kallisto_linux-v0.43.1.tar.gz
+rm kallisto_linux-v0.43.1.tar.gz
+if ! command -v ./kallisto_linux-v0.43.1/kallisto >/dev/null 2>&1; then
   echo "Failed to install Kallisto"
   exit 1
 else
@@ -94,16 +84,16 @@ else
 fi
 
 #Install samtools
-wget https://github.com/samtools/samtools/releases/download/1.3.1/samtools-1.3.1.tar.bz2
-bzip2 -d samtools-1.3.1.tar.bz2
-tar -xvf samtools-1.3.1.tar
-rm samtools-1.3.1.tar
-cd samtools-1.3.1/
+wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2
+bzip2 -d samtools-1.5.tar.bz2
+tar -xvf samtools-1.5.tar
+rm samtools-1.5.tar
+cd samtools-1.5/
 ./configure --prefix=`pwd`
 make
 make install
 cd ..
-if ! command -v ./samtools-1.3.1/samtools >/dev/null 2>&1; then
+if ! command -v ./samtools-1.5/samtools >/dev/null 2>&1; then
   echo "Failed to install SAMtools"
   exit 1
 else
@@ -164,9 +154,6 @@ fi
 
   mkdir ref
   mkdir results_matrices
-  
-  #Make BRIE files
-  mkdir BRIE_splicing_events
 
 }
 
