@@ -165,7 +165,7 @@ Kallisto () {
 	#Start the clock for kallisto
 	start_kallisto=`date +%s`
 
-	./Simulation/kallisto_linux-v0.43.0/kallisto quant -i Simulation/indices/Kallisto/transcripts.idx --threads=8 --output-dir=Simulation/Kallisto_results/$filename Simulation/data/simulated/$filename'_1.fq' Simulation/data/simulated/$filename'_2.fq'
+	./Simulation/kallisto_linux-v0.43.1/kallisto quant -i Simulation/indices/Kallisto/transcripts.idx --threads=8 --output-dir=Simulation/Kallisto_results/$filename Simulation/data/simulated/$filename'_1.fq' Simulation/data/simulated/$filename'_2.fq'
 
 	#Stop the clock for kallisto
 	stop_kallisto=`date +%s`
@@ -227,7 +227,7 @@ STAR(){
 	start_samtools_sort=`date +%s`
 
 	#Sort STAR bamfiles
-	./Simulation/samtools-1.3.1/samtools sort Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -T Simulation/bamfiles/simulated/$filename'temp' -o Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
+	./Simulation/samtools-1.5/samtools sort Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -T Simulation/bamfiles/simulated/$filename'temp' -o Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
 
 
 	#Stop the clock for Samtools sort
@@ -237,7 +237,7 @@ STAR(){
 	start_samtools_index=`date +%s`
 
 	#Index STAR bamfiles
-	./Simulation/samtools-1.3.1/samtools index Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
+	./Simulation/samtools-1.5/samtools index Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.sortedByCoord.out.bam'
 
 	#Stop the clock for Samtools
 	stop_samtools_index=`date +%s`
