@@ -51,10 +51,10 @@ benchmark(){
         if [ "$1" == "Sailfish" ]; then
               #If there is no index for sailfish, make it
               if [ ! "$(ls -A Simulation/indices/Sailfish)" ]; then
-                export LD_LIBRARY_PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
-                export PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
+                export LD_LIBRARY_PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/lib:$LD_LIBRARY_PATH
+                export PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/bin:$PATH
                 start_sailfish_index=`date +%s`
-                LC_ALL=C ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish index -p 8 -t Simulation/ref/reference.transcripts.fa -o Simulation/indices/Sailfish/ -k 31
+                LC_ALL=C ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish index -p 8 -t Simulation/ref/reference.transcripts.fa -o Simulation/indices/Sailfish/ -k 31
                 stop_sailfish_index=`date +%s`
                 printf $filename","$((stop_sailfish_index-start_sailfish_index)) >> Simulation/time_stats/time_sailfish_index.csv
               fi
