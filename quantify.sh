@@ -184,15 +184,15 @@ Sailfish(){
   filename=$1
   library_type=$2
   mkdir Simulation/Sailfish_results/$filename
-  export LD_LIBRARY_PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
-  export PATH=`pwd`/Simulation/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
+  export LD_LIBRARY_PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/lib:$LD_LIBRARY_PATH
+  export PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/bin:$PATH
 
   #Start the clock for sailfish
   start_sailfish=`date +%s`
 
-  echo ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "$library_type" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
+  echo ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "$library_type" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
 
-  ./Simulation/Sailfish-0.6.3-Linux_x86-64/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "T=PE:O=><:S=U" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
+  ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "T=PE:O=><:S=U" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
 
   stop_sailfish=`date +%s`
 
