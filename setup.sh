@@ -28,19 +28,31 @@ setup(){
 
   #Install Sailfish
   #Note to self - do a practice install tomorrow and see if it works from source
-  wget https://github.com/kingsfordgroup/sailfish/releases/tag/v0.10.0
-  tar -xvzf Sailfish-0.6.3-Linux_x86-64.tar.gz
-  rm Sailfish-0.6.3-Linux_x86-64.tar.gz
-  export LD_LIBRARY_PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
-  export PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
-  if ! command -v ./Sailfish-0.6.3-Linux_x86-64/bin/sailfish -h; then
+  #wget https://github.com/kingsfordgroup/sailfish/releases/tag/v0.10.0
+  #tar -xvzf Sailfish-0.6.3-Linux_x86-64.tar.gz
+  #rm Sailfish-0.6.3-Linux_x86-64.tar.gz
+  #export LD_LIBRARY_PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
+  #export PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
+  #if ! command -v ./Sailfish-0.6.3-Linux_x86-64/bin/sailfish -h; then
+   # echo "Failed to install Sailfish"
+    #exit 1
+  #else
+   # echo "Successfully installed Sailfish"
+  #fi
+
+  #Install Sailfish
+  wget https://github.com/kingsfordgroup/sailfish/releases/download/v0.10.0/SailfishBeta-0.10.0_CentOS5.tar.gz
+  tar -xvzf SailfishBeta-0.10.0_CentOS5.tar.gz
+  rm SailfishBeta-0.10.0_CentOS5.tar.gz
+  export LD_LIBRARY_PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/lib:$LD_LIBRARY_PATH
+  export PATH=`pwd`/SailfishBeta-0.10.0_CentOS5/bin:$PATH
+  if ! command -v ./SailfishBeta-0.10.0_CentOS5/bin/sailfish -h; then
     echo "Failed to install Sailfish"
     exit 1
   else
     echo "Successfully installed Sailfish"
   fi
-
-
+  
   #Install eXpress
   wget https://pachterlab.github.io/eXpress/downloads/express-1.5.1/express-1.5.1-linux_x86_64.tgz
   tar -xvzf express-1.5.1-linux_x86_64.tgz
