@@ -48,9 +48,9 @@ elif program == "Sailfish":
     writefile("Sailfish", "Simulation/Sailfish_results/*/quant.sf", "rsem-generate-data-matrix2", "TPM")
 
 elif program == "eXpress":
-    writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix6", "Counts")
-    writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix10", "FPKM")
-    writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix14", "TPM")
+    #writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix6", "Counts")
+    #writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix10", "FPKM")
+    writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix13", "TPM")
 
 else:
     print "Wrong argument supplied, try again."
