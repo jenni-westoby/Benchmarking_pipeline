@@ -192,8 +192,7 @@ Sailfish(){
 
   echo ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "$library_type" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
 
-  ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "T=PE:O=><:S=U" { --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq"} -o Simulation/Sailfish_results/$filename
-
+  ./Simulation/SailfishBeta-0.10.0_CentOS5/bin/sailfish quant -p 8 -i Simulation/indices/Sailfish/ -l "IU"  --mates1 Simulation/data/simulated/$filename"_1.fq" --mates2 Simulation/data/simulated/$filename"_2.fq" -o Simulation/Sailfish_results/$filename
   stop_sailfish=`date +%s`
 
   printf $filename","$((stop_sailfish-start_sailfish))"\n" >> Simulation/time_stats/time_sailfish.csv
