@@ -12,7 +12,7 @@ atrix.\n";
     exit(-1);
 }
 
-my $offsite = 14; # for new file formats
+my $offsite = 13; # for new file formats
 if ($ARGV[0] =~ /alleles.results$/) { $offsite = 14; }
 
 my $line;
