@@ -27,20 +27,6 @@ setup(){
   fi
 
   #Install Sailfish
-  #Note to self - do a practice install tomorrow and see if it works from source
-  #wget https://github.com/kingsfordgroup/sailfish/releases/tag/v0.10.0
-  #tar -xvzf Sailfish-0.6.3-Linux_x86-64.tar.gz
-  #rm Sailfish-0.6.3-Linux_x86-64.tar.gz
-  #export LD_LIBRARY_PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/lib:$LD_LIBRARY_PATH
-  #export PATH=`pwd`/Sailfish-0.6.3-Linux_x86-64/bin:$PATH
-  #if ! command -v ./Sailfish-0.6.3-Linux_x86-64/bin/sailfish -h; then
-   # echo "Failed to install Sailfish"
-    #exit 1
-  #else
-   # echo "Successfully installed Sailfish"
-  #fi
-
-  #Install Sailfish
   wget https://github.com/kingsfordgroup/sailfish/releases/download/v0.10.0/SailfishBeta-0.10.0_CentOS5.tar.gz
   tar -xvzf SailfishBeta-0.10.0_CentOS5.tar.gz
   rm SailfishBeta-0.10.0_CentOS5.tar.gz
@@ -122,18 +108,6 @@ fi
   else
     echo "Successfully installed RSeQC"
   fi
-  
-  #Install BRIE
-  easy_install -U distribute matplotlib
-  pip install numpy scipy pysam h5py
-  pip install brie
-  if ! command -v brie  >/dev/null 2>&1; then
-    echo "Failed to install BRIE"
-  exit 1
-  else
-    echo "Successfully installed BRIE"
-  fi
-  deactivate
 
   #Make a directory for RNA-seq data including raw and simulated data
   mkdir data
