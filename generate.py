@@ -45,7 +45,7 @@ elif program == "Salmon_SMEM":
     writefile("Salmon_SMEM", "Simulation/Salmon_results/Salmon_SMEM_results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
 
 elif program == "Sailfish":
-    writefile("Sailfish", "Simulation/Sailfish_results/*/quant.sf", "rsem-generate-data-matrix2", "TPM")
+    writefile("Sailfish", "Simulation/Sailfish_results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
 
 elif program == "eXpress":
     #writefile("eXpress", "Simulation/eXpress_results/*/results.xprs", "rsem-generate-data-matrix6", "Counts")
