@@ -62,44 +62,45 @@ setup(){
   fi
 
   #Install Kallisto
-wget https://github.com/pachterlab/kallisto/releases/download/v0.43.1/kallisto_linux-v0.43.1.tar.gz
-tar -xvzf kallisto_linux-v0.43.1.tar.gz
-rm kallisto_linux-v0.43.1.tar.gz
-if ! command -v ./kallisto_linux-v0.43.1/kallisto >/dev/null 2>&1; then
-  echo "Failed to install Kallisto"
-  exit 1
-else
-  echo "Successfully installed Kallisto"
-fi
+  wget https://github.com/pachterlab/kallisto/releases/download/v0.43.1/kallisto_linux-v0.43.1.tar.gz
+  tar -xvzf kallisto_linux-v0.43.1.tar.gz
+  rm kallisto_linux-v0.43.1.tar.gz
+  if ! command -v ./kallisto_linux-v0.43.1/kallisto >/dev/null 2>&1; then
+    echo "Failed to install Kallisto"
+    exit 1
+  else
+    echo "Successfully installed Kallisto"
+  fi
 
-#Install STAR
-git clone https://github.com/alexdobin/STAR.git
-if ! command -v ./STAR/bin/Linux_x86_64/STAR >/dev/null 2>&1; then
-  echo "Failed to install STAR"
-  exit 1
-else
-  echo "Successfully installed STAR"
-fi
+  #Install STAR
+  git clone https://github.com/alexdobin/STAR.git
+  if ! command -v ./STAR/bin/Linux_x86_64/STAR >/dev/null 2>&1; then
+    echo "Failed to install STAR"
+    exit 1
+  else
+    echo "Successfully installed STAR"
+  fi
 
-#Install samtools
-wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2
-bzip2 -d samtools-1.5.tar.bz2
-tar -xvf samtools-1.5.tar
-rm samtools-1.5.tar
-cd samtools-1.5/
-./configure --prefix=`pwd`
-make
-make install
-cd ..
-if ! command -v ./samtools-1.5/samtools >/dev/null 2>&1; then
-  echo "Failed to install SAMtools"
-  exit 1
-else
-  echo "Successfully installed SAMtools"
-fi
+  #Install samtools
+  wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2
+  bzip2 -d samtools-1.5.tar.bz2
+  tar -xvf samtools-1.5.tar
+  rm samtools-1.5.tar
+  cd samtools-1.5/
+  ./configure --prefix=`pwd`
+  make
+  make install
+  cd ..
+  if ! command -v ./samtools-1.5/samtools >/dev/null 2>&1; then
+    echo "Failed to install SAMtools"
+    exit 1
+  else
+    echo "Successfully installed SAMtools"
+  fi
 
-  #Install RSeQC
-  virtualenv venv
+  #Install virtualenv and RSeQC
+  git clone https://github.com/pypa/virtualenv.git
+  python virtualenv/virtualenv.py venv
   source venv/bin/activate
   pip install RSeQC
   if ! command -v  >/dev/null 2>&1; then
