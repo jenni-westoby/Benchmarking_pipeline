@@ -202,10 +202,9 @@ Sailfish(){
   rm Simulation/Sailfish_results/$filename/reads.count_info
   rm Simulation/Sailfish_results/$filename/reads.sfc
 
-  echo "Transcript      Length  TPM     RPKM    KPKM    EstimatedNumKmers       EstimatedNumReads" >> Simulation/Sailfish_results/$filename/quantsorted.sf
-  sed 's/^# *//' Simulation/Sailfish_results/$filename/quant.sf | tail -n +6 | sort -n -k1.8 >> Simulation/Sailfish_results/$filename/quantsorted.sf
+  echo "Name    Length  EffectiveLength TPM     NumReads" > Simulation/Sailfish_results/$filename/quantsorted.sf
+  tail -n +2 Simulation/Sailfish_results/$filename/quant.sf | sort -n -k1.8 >> Simulation/Sailfish_results/$filename/quantsorted.sf
   mv Simulation/Sailfish_results/$filename/quantsorted.sf Simulation/Sailfish_results/$filename/quant.sf
-
 
 }
 
