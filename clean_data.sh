@@ -20,3 +20,6 @@ sed 's/\"//g' eXpress_TPM.txt | sed 's|Simulation/eXpress_results/||g' | sed 's|
 
 #RSEM
 sed 's/\"//g' RSEM_TPM.txt | sed 's|Simulation/RSEM_results/||g' | sed 's|.isoforms.results||g' > clean_RSEM_TPM.txt
+
+#ground truth
+sed 's/\"//g' ground_truth_TPM.txt | sed 's|Simulation/data/simulated/||g' | sed 's|.sim.isoforms.results||g' > clean_ground_truth_TPM.txt
