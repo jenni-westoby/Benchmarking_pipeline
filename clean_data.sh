@@ -10,7 +10,7 @@ sed 's/\"//g' Sailfish_TPM.txt | sed 's|Simulation/Sailfish_results/||g' | sed '
 #Salmon
 sed 's/\"//g' Salmon_align_TPM.txt | sed 's|Simulation/Salmon_results/Salmon_Alignment_Results/||g' | sed 's|/quant.sf||g' > clean_Salmon_align_TPM.txt
 sed 's/\"//g' Salmon_SMEM_TPM.txt | sed 's|Simulation/Salmon_results/Salmon_SMEM_results/||g' | sed 's|/quant.sf||g' > clean_Salmon_SMEM_TPM.txt
-sed 's/\"//g' Salmon_quasi_TPM.txt | sed 's|Simulation/Salmon_results/Salmon_quasi_results/||g' | sed 's|/quant.sf > clean_Salmon_quasi_TPM.txt
+sed 's/\"//g' Salmon_quasi_TPM.txt | sed 's|Simulation/Salmon_results/Salmon_quasi_results/||g' | sed 's|/quant.sf||g' > clean_Salmon_quasi_TPM.txt
 
 #Kallisto
 sed 's/\"//g' Kallisto_TPM.txt | sed 's|Simulation/Kallisto_results/||g' | sed 's|/abundance.tsv||g' > clean_Kallisto_TPM.txt
