@@ -22,10 +22,12 @@ To run the pipeline:
 
 5. If you wish, you can also perform quality control on your simulated cells based on read and alignment quality. This is probably wise, as RSEM sometimes generates cells with very few reads. Execute ./quality_control.sh QC path/to/gtf path/to/fasta and delete any problematic cells from the data/simulated directory.
 
-6. Perform any further quality control you would like to perform prior to doing your benchmarking. For example, I use the scater package to filter based on patterns of expression, such as unusually high percentages of ERCCs. For this analysis I use the ground truth expression values produced in the simulation.
+6. Perform any further quality control you would like to perform prior to doing your benchmark. 
 
-7. Before performing the quantification step, delete any cells that you don’t want to include in the benchmarking.
+7. Before performing the quantification step, delete any cells that you don’t want to include in the benchmark.
 
 8. Execute ./benchmark.sh benchmark name_of_program_you_want_to_test. This will generate results matrices of expression values for the method you are interested in. Repeat for each method you want to test.
 
-9. Execute ./make_matrix.sh make_matrix. This generates a compact results matrix for each method in results_matrices.
+9. Execute ./make_matrix.sh make_matrix name_of_program_you_want_to_test. This generates a compact results matrix for each method in results_matrices.
+
+Note - for quality control purposes it is often useful to have expression estimates from the original (unsimulated) data. You can obtain this data by executing ./benchmark_real.sh benchmark Kallisto /path/to/data
