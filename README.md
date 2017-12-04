@@ -32,4 +32,4 @@ To run the pipeline:
 
 10. Execute ./clean_data.sh to trim filename paths from results matrix column names.
 
-Note - for quality control purposes it is often useful to have expression estimates from the original (unsimulated) data. You can obtain this data by executing ./benchmark_real.sh benchmark Kallisto /path/to/data
+Note - for quality control purposes it is often useful to have expression estimates from the original (unsimulated) data. You can obtain this data by executing ./benchmark_real.sh benchmark Kallisto /path/to/data. This command was also used to generate the real single cell counts data used in the final section of the results, in which the number of isoforms expressed per gene was considered.
