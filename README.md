@@ -10,6 +10,8 @@ Prerequisites:
 
 -directory containing single cell RNA-seq data. This data should be demultiplexed, have any adaptors trimmed and should be in the format of gzipped fastq files.
 
+Note: This pipeline was originally executed on using an LSF based jobs system on a HPC. Commands beginning 'bsub' will have to be altered to enable you to repeat the analysis on a different machine.
+
 To run the pipeline:
 
 1. Execute ./setup.sh setup. This will create a new directory called Simulation into which all the software required for this pipeline will be locally installed. In addition, empty directories are created within the Simulation directory which will eventually contain the RSEM references, various indices, the raw and simulated data, results matrices and graphs. This step will take ~30 minutes - 1 hour depending on your network speed.

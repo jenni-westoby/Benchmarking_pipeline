@@ -46,6 +46,32 @@ RSEM(){
 }
 
 
+Salmon_align_update(){
+
+  #Rename/reformat input arguments
+  filename=$1
+
+  mkdir Simulation/Salmon_results/Updated_Alignment_Results/$filename
+
+  if [ ! -f Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' ]; then
+    STAR $filename
+  fi
+
+  ./Simulation/Salmon-latest_linux_x86_64/bin/salmon --no-version-check quant -a Simulation/bamfiles/simulated/$filename'Aligned.toTranscriptome.out.bam' -t Simulation/ref/reference.transcripts.fa -l A -o Simulation/Salmon_results/Updated_Alignment_Results/$filename -p 8 --useErrorModel --rangeFactorizationBins 4
+
+  rm -r Simulation/Salmon_results/Updated_Alignment_Results/$filename/aux_info
+	rm -r Simulation/Salmon_results/Updated_Alignment_Results/$filename/cmd_info.json
+	rm -r Simulation/Salmon_results/Updated_Alignment_Results/$filename/lib_format_counts.json
+	rm -r Simulation/Salmon_results/Updated_Alignment_Results/$filename/libParams
+	rm -r Simulation/Salmon_results/Updated_Alignment_Results/$filename/logs
+
+  #Sort the results file
+  echo "Name    Length  EffectiveLength TPM     NumReads" > Simulation/Salmon_results/Updated_Alignment_Results/$filename/quantsorted.sf
+  tail -n +2 Simulation/Salmon_results/Updated_Alignment_Results/$filename/quant.sf | sort -n -k1.8 >> Simulation/Salmon_results/Updated_Alignment_Results/$filename/quantsorted.sf
+  mv Simulation/Salmon_results/Updated_Alignment_Results/$filename/quantsorted.sf Simulation/Salmon_results/Updated_Alignment_Results/$filename/quant.sf
+
+  
+}
 
 
 Salmon(){
@@ -252,5 +278,6 @@ export -f eXpress
 export -f Kallisto
 export -f STAR
 export -f Sailfish
+export -f Salmon_align_update
 
 "$@"

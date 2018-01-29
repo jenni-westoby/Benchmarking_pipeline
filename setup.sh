@@ -61,6 +61,10 @@ setup(){
     echo "Successfully installed Salmon"
   fi
 
+  wget https://github.com/COMBINE-lab/salmon/releases/download/v0.9.1/Salmon-0.9.1_linux_x86_64.tar.gz
+  tar -xvzf Salmon-0.9.1_linux_x86_64.tar.gz
+
+
   #Install Kallisto
   wget https://github.com/pachterlab/kallisto/releases/download/v0.43.1/kallisto_linux-v0.43.1.tar.gz
   tar -xvzf kallisto_linux-v0.43.1.tar.gz

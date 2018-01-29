@@ -8,10 +8,15 @@ benchmark(){
   if [ $# -eq 1 ]
     then
       #If an appropriate argument was passed
-      if [ "$1" == "Kallisto" ] || [ "$1" == "Salmon" ] || [ "$1" == "eXpress" ] || [ "$1" == "RSEM" ] || [ "$1" == "Sailfish" ] || [ "$1" == "BRIE" ]; then
+      if [ "$1" == "Kallisto" ] || [ "$1" == "Salmon" ] || [ "$1" == "eXpress" ] || [ "$1" == "RSEM" ] || [ "$1" == "Sailfish" ] || [ "$1" == "Salmon_align_update" ]; then
 
         #Make results directory
         mkdir Simulation/$1"_results"
+
+        #If the argument is Salmon_align_update, make the updated alignment directory
+        if [ "$1" == "Salmon_align_update" ]; then
+          mkdir Simulation/Salmon_results/Updated_Alignment_Results
+        fi
 
         #If the argument is Salmon, make SMEM, quasi and alignment results directories
         if [ "$1" == "Salmon" ]; then

@@ -34,6 +34,10 @@ elif program == "ground_truth":
 elif program == "Kallisto":
     writefile("Kallisto", "Simulation/Kallisto_results/*/abundance.tsv", "rsem-generate-data-matrix3", "Counts")
     writefile("Kallisto", "Simulation/Kallisto_results/*/abundance.tsv", "rsem-generate-data-matrix4", "TPM")
+    
+elif program == "Kallisto_real":
+    writefile("Kallisto_real", "Simulation/Kallisto_real_results/*/abundance.tsv", "rsem-generate-data-matrix3", "Counts")
+    writefile("Kallisto_real", "Simulation/Kallisto_real_results/*/abundance.tsv", "rsem-generate-data-matrix4", "TPM")
 
 elif program == "Salmon_align":
     writefile("Salmon_align", "Simulation/Salmon_results/Salmon_Alignment_Results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
@@ -43,6 +47,9 @@ elif program == "Salmon_quasi":
 
 elif program == "Salmon_SMEM":
     writefile("Salmon_SMEM", "Simulation/Salmon_results/Salmon_SMEM_results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
+
+elif program == "Updated_Salmon_Alignment_Results":
+    writefile("Updated_Salmon_Alignment_Results", "Simulation/Salmon_results/Updated_Alignment_Results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
 
 elif program == "Sailfish":
     writefile("Sailfish", "Simulation/Sailfish_results/*/quant.sf", "rsem-generate-data-matrix3", "TPM")
