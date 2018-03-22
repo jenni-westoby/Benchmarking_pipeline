@@ -19,7 +19,7 @@ To run the pipeline:
 3. Execute ./quality_control.sh QC path/to/gtf path/to/fasta path/to/raw/data. This creates a table of quality control statistics. Based on the results of this you can decide which cells you would like to simulate and which you are going to discard. The thresholds used to discard cells in our manuscript are listed below:
 
 | Statistic | Name of statistic in table | Threshold |
--------------|-----------------
+-------------|--------|---------
 |No. uniquely mapping reads|Unique    | 8000000 |
 |No. of non-uniquely mapping reads|NonUnique|350000|
 |No. alignments|NumAlign|8200000|
