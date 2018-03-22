@@ -20,10 +20,10 @@ To run the pipeline:
 
 | Statistic | Name of statistic in table | Threshold |
 -------------|--------|---------
-|No. uniquely mapping reads|Unique    | 8000000 |
-|No. of non-uniquely mapping reads|NonUnique|350000|
-|No. alignments|NumAlign|8200000|
-|No. of reads|NumReads|4000000|
+|No. uniquely mapping reads|Unique    | >8000000 |
+|No. of non-uniquely mapping reads|NonUnique|>350000|
+|No. alignments|NumAlign|>8200000|
+|No. of reads|NumReads|>4000000|
 
 In addition, scater was used to identify and remove cells with more than 10% of reads mapping to rRNA. To generate the counts matrix used by scater, execute ./benchmark_real.sh benchmark Kallisto /path/to/data.
 
